@@ -54,7 +54,7 @@ def sendResponse(request):
     if request.GET.get("query") not in issue_list:
         prediction[0] = 'Please select a category: 1. Software Issues, 2. Hardware Issues, 3. Network and Connectivity, 4. Account and Access, 5. Data and Storage, 6. Security and Privacy, 7. Website and Web Application Issues, 8. System and Operating System Issues, 9. Email and Communication Issues, 10. Development and Programming Issues, 11. Other.'
     if request.GET.get("query") == 'Other':
-        prediction[0] = '<textarea width="50%" height="30%"></textarea>'
-        return JsonResponse(prediction[0])
+        prediction[0] = 'Please elobrate your issue in details'
+        return JsonResponse({'prediction': prediction[0]})
     return JsonResponse({'prediction': prediction[0]})
 
