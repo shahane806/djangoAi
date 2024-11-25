@@ -17,45 +17,65 @@ filepath = pathlib.Path(__file__).resolve().parent
 Pipe = joblib.load(filepath/'chatbot')
 
 def sendResponse(request):
-    # Make a prediction
-    issue_list = [
-    "I have an issue",
-    "Software Issues",
-    "Hardware Issues",
-    "Network and Connectivity",
-    "Account and Access",
-    "Data and Storage",
-    "Security and Privacy",
-    "Website and Web Application Issues",
-    "System and Operating System Issues",
-    "Email and Communication Issues",
-    "Development and Programming Issues",
-    "Installation Problems",
-    "Application Crashes",
-    "Performance Issues",
-    "Device Connectivity",
-    "Power Issues",
-    "Internet Connectivity",
-    "VPN Issues",
-    "Login Problems",
-    "Two-Factor Authentication",
-    "Data Loss",
-    "Storage Space",
-    "Malware and Viruses",
-    "Firewall Issues",
-    "Page Load Errors",
-    "Browser Compatibility",
-    "OS Updates",
-    "Driver Issues",
-    "Email Delivery",
-    "Other"
-]
-    prediction = Pipe.predict([request.GET.get("query")])
-    if request.GET.get("query") not in issue_list:
-        prediction[0] = 'Please select a category: 1. Software Issues, 2. Hardware Issues, 3. Network and Connectivity, 4. Account and Access, 5. Data and Storage, 6. Security and Privacy, 7. Website and Web Application Issues, 8. System and Operating System Issues, 9. Email and Communication Issues, 10. Development and Programming Issues, 11. Other.'
-    if request.GET.get("query") == 'Other':
-        return HttpResponse("""
-<textarea id="elobrateInputFromDjango" type="text" placeholder="Please elobrate your issue in details"/>
-""")
-    return JsonResponse({'prediction': prediction[0]})
+    if request.GET.get('name')=="TSI":
+          # Make a prediction
+        issue_list = [
+        "I have an issue",
+        "Software Issues",
+        "Hardware Issues",
+        "Network and Connectivity",
+        "Account and Access",
+        "Data and Storage",
+        "Security and Privacy",
+        "Website and Web Application Issues",
+        "System and Operating System Issues",
+        "Email and Communication Issues",
+        "Development and Programming Issues",
+        "Installation Problems",
+        "Application Crashes",
+        "Performance Issues",
+        "Device Connectivity",
+        "Power Issues",
+        "Internet Connectivity",
+        "VPN Issues",
+        "Login Problems",
+        "Two-Factor Authentication",
+        "Data Loss",
+        "Storage Space",
+        "Malware and Viruses",
+        "Firewall Issues",
+        "Page Load Errors",
+        "Browser Compatibility",
+        "OS Updates",
+        "Driver Issues",
+        "email delivery",
+        "other"
+    ]
+
+        # Convert all items in the list to lowercase
+        issue_list_lower = [issue.lower() for issue in issue_list]
+
+        print(issue_list_lower)
+
+        prediction = Pipe.predict([request.GET.get("query")])
+        if request.GET.get("query").lower() not in issue_list_lower:
+            prediction[0] = 'Please select a category: 1. Software Issues, 2. Hardware Issues, 3. Network and Connectivity, 4. Account and Access, 5. Data and Storage, 6. Security and Privacy, 7. Website and Web Application Issues, 8. System and Operating System Issues, 9. Email and Communication Issues, 10. Development and Programming Issues, 11. Other.'
+        if request.GET.get("query").lower() == 'other':
+            return HttpResponse("""
+        <textarea id="elobrateInputFromDjango" type="text" placeholder="Please elobrate your issue in details"/>
+        """)
+        return JsonResponse({'prediction': prediction[0]})
+    elif request.GET.get("name")=="DigitRecog":
+       print(request.GET.get('query'))
+       #get the image from the url 
+       #resize that image into 28X28 pixels
+       #send for prediction 
+       #generate label as an output
+       return HttpResponse("""
+          Hello This is Digit Recognization Machine Learning Model 
+          How to use it : 
+           Input : number image 
+           Output : label out of this {"0,1,2,3,4,5,6,7,8,9"}
+        """)
+
 
